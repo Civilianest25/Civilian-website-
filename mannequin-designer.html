@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Civilian Fit Designer</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #0a0a0a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    canvas {
+      border: 2px solid #333;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    .controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    select, button {
+      padding: 0.5rem 1rem;
+      background: #222;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Try the Fit</h1>
+  <canvas id="mannequin" width="300" height="500"></canvas>
+  <div class="controls">
+    <select id="topSelect">
+      <option value="none">No Top</option>
+      <option value="urban_echo">Urban Echo Tee</option>
+      <option value="ghost_frame">Ghost Frame Jacket</option>
+    </select>
+    <select id="bottomSelect">
+      <option value="none">No Bottom</option>
+      <option value="silent_signal">Silent Signal Pants</option>
+    </select>
+    <button onclick="drawOutfit()">Apply</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("mannequin");
+    const ctx = canvas.getContext("2d");
+
+    const baseImg = new Image();
+    baseImg.src = "https://i.imgur.com/s8XbDLc.png";
+
+    const topImages = {
+      none: null,
+      urban_echo: "https://i.imgur.com/kVgOZ7A.png",
+      ghost_frame: "https://i.imgur.com/tm3z7hL.png"
+    };
+
+    const bottomImages = {
+      none: null,
+      silent_signal: "https://i.imgur.com/dI5DPXi.png"
+    };
+
+    function drawOutfit() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(baseImg, 0, 0);
+
+      const topChoice = document.getElementById("topSelect").value;
+      const bottomChoice = document.getElementById("bottomSelect").value;
+
+      if (topChoice !== "none") {
+        const top = new Image();
+        top.src = topImages[topChoice];
+        top.onload = () => ctx.drawImage(top, 0, 0);
+      }
+
+      if (bottomChoice !== "none") {
+        const bottom = new Image();
+        bottom.src = bottomImages[bottomChoice];
+        bottom.onload = () => ctx.drawImage(bottom, 0, 0);
+      }
+    }
+
+    baseImg.onload = drawOutfit;
+  </script>
+</body>
+</html>
